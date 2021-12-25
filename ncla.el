@@ -5,7 +5,7 @@
     "Open NCLA in an interactive minibuffer"
   (interactive)
   (let (preprocessed-cmd cmd name desktop-files)
-    (setq desktop-files (ncla--get-applications ncla/desktop-file-paths))
+    (setq desktop-files (ncla--get-applications ncla-desktop-file-paths))
 
     (setq preprocessed-cmd (assoc (completing-read "Start application: "
 						   desktop-files nil t)
