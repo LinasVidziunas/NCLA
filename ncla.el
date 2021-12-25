@@ -1,5 +1,6 @@
 ;; change the path to desktop file directory if necessary
-(defvar ncla-desktop-file-paths (directory-files "/usr/share/applications/" t (regexp-quote ".desktop")))
+(defvar ncla-desktop-file-paths
+  (directory-files "/usr/share/applications/" t (regexp-quote ".desktop")))
 
 (defun ncla()
     "Open NCLA in an interactive minibuffer"
@@ -46,3 +47,5 @@
     
     ;; Black magic to return applications
     (push (pop applications) applications)))
+
+(provide 'ncla)
