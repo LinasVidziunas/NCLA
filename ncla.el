@@ -32,20 +32,17 @@
 			   (buffer-substring-no-properties
 			    (point-min)
 			    (point-max))) "\n" t))
-
-	    (when (and (string-match-p "Name=" line)
-		       (string-match-p "Name=" (substring line 0 5)))
-	      (setq current-application (substring line 5 (length line)))
-	      (setq nameb 't))
-	    (when (and (string-match-p "Exec=" line)
-		       (string-match-p "Exec=" (substring line 0 5)))
-	      (setq current-application
-		    (cons current-application (substring line 5 (length line)) ))
-	      (setq execb 't))
-	    (when (and nameb execb)
-	      (throw 'done current-application)))
-	  )
+	    (when (>= (length line) 5)
+	      (when (string-match-p "Name=" (substring line 0 5))
+		(setq current-application (substring line 5 (length line)))
+		(setq nameb 't))
+	      (when (string-match-p "Exec=" (substring line 0 5))
+		(setq current-application
+		      (cons current-application (substring line 5 (length line)) ))
+		(setq execb 't))
+	      (when (and nameb execb)
+		(throw 'done current-application)))))
 	(setq applications (cons current-application applications))))
-
+    
     ;; Black magic to return applications
     (push (pop applications) applications)))
