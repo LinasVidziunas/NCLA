@@ -1,11 +1,11 @@
 ;; change the path to desktop file directory if necessary
 (defvar ncla-desktop-file-paths (directory-files "/usr/share/applications/" t (regexp-quote ".desktop")))
 
-(defun ncla/open ()
+(defun ncla()
     "Open NCLA in an interactive minibuffer"
   (interactive)
   (let (preprocessed-cmd cmd name desktop-files)
-    (setq desktop-files (ncla/get-applications ncla/desktop-file-paths))
+    (setq desktop-files (ncla--get-applications ncla/desktop-file-paths))
 
     (setq preprocessed-cmd (assoc (completing-read "Start application: "
 						   desktop-files nil t)
@@ -20,7 +20,7 @@
 	  (setq cmd (cons cmd element)))) 
     (start-process-shell-command name nil (cdr cmd))))
 
-(defun ncla/get-applications (desktop-file-paths)
+(defun ncla--get-applications (desktop-file-paths)
   "Returns list with a list of application name and command"
   (let (applications)
     (dolist (file-path desktop-file-paths)
