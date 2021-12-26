@@ -3,10 +3,10 @@
 (defvar ncla-desktop-file-paths
   (directory-files "/usr/share/applications/" t (regexp-quote ".desktop")))
 
-(defun ncla()
+(defun ncla ()
     "Open NCLA in an interactive minibuffer"
   (interactive)
-  (let (preprocessed-cmd cmd name desktop-files)
+  (let (preprocessed-cmd cmd name desktop-files comment)
     (setq desktop-files (ncla--get-applications ncla-desktop-file-paths))
 
     (setq preprocessed-cmd
@@ -14,19 +14,16 @@
 	  (assoc (completing-read "Start application: "
 				  desktop-files nil t)
 		 desktop-files))
+
     (setq name (car preprocessed-cmd))
 
-    ;; name
-    ;; (print (car preprocessed-cmd))	
-
-    ;; exec command
-    ;; (print (car (cdr preprocessed-cmd)))
+    ;; fully processed command, ready to be run
     (setq cmd (ncla--process-exec-cmd (car (cdr preprocessed-cmd))))
 
     ;; comment
     ;; (print (cdr (cdr preprocessed-cmd)))
 
-    (setq preprocessed-cmd (split-string (car (cdr preprocessed-cmd)) " " t))
+    (setq comment (cdr (cdr preprocessed-cmd)))
 
     (start-process-shell-command name nil cmd)))
 
