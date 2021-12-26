@@ -47,3 +47,16 @@ If set to a non-nil value, applicataions with ~Terminal=true~ in their ~.desktop
   "If non-nil value, Terminal=true applications will be included in the list")
 
 #+end_src
+
+**** ~ncla-cache-timeout~
+
+Time it takes before all ~desktop.el~ files need to be parsed when running NCLA.
+
+*Definition*
+
+#+begin_src emacs-lisp
+
+(defvar ncla-cache-timeout 5
+  "Time in seconds for the cache timeout")
+
+  #+end_src
