@@ -28,13 +28,13 @@
     (start-process-shell-command name nil cmd)))
 
 
-(defun ncla--get-application-comment-from-application-list
+(defun ncla--get-comment-by-app-name-from-app-list
     (application-name application-list)
   "Returns the comment of an application from the application list"
   (cdr (cdr (assoc application-name application-list))))
 
 
-(defun ncla--get-application-exec-command-from-application-list
+(defun ncla--get-exec-cmd-by-app-name-from-app-list
     (application-name applicatoin-list)
   "Returns the exec command of an application from the application list"
   (cdr (cdr (assoc application-name application-list))))
