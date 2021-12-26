@@ -1,4 +1,5 @@
 ;; change the path to desktop file directory if necessary
+;; should later consider using xdg
 (defvar ncla-desktop-file-paths
   (directory-files "/usr/share/applications/" t (regexp-quote ".desktop")))
 
@@ -8,19 +9,58 @@
   (let (preprocessed-cmd cmd name desktop-files)
     (setq desktop-files (ncla--get-applications ncla-desktop-file-paths))
 
-    (setq preprocessed-cmd (assoc (completing-read "Start application: "
-						   desktop-files nil t)
-				  desktop-files))
+    (setq preprocessed-cmd
+	  ;; Associate selected element in completion list with 
+	  (assoc (completing-read "Start application: "
+				  desktop-files nil t)
+		 desktop-files))
     (setq name (car preprocessed-cmd))
 
+    ;; name
+    ;; (print (car preprocessed-cmd))	
+
+    ;; exec command
+    ;; (print (car (cdr preprocessed-cmd)))
+    (setq cmd (ncla--process-exec-cmd (car (cdr preprocessed-cmd))))
+
+    ;; comment
+    ;; (print (cdr (cdr preprocessed-cmd)))
 
     (setq preprocessed-cmd (split-string (car (cdr preprocessed-cmd)) " " t))
 
-    (dolist (element preprocessed-cmd)
-      (if (not (string-match-p "%" element))
-	  (setq cmd (cons cmd element)))) 
-    (start-process-shell-command name nil (cdr cmd))))
+    (start-process-shell-command name nil cmd)))
 
+
+(defun ncla--get-application-comment-from-application-list
+    (application-name application-list)
+  "Returns the comment of an application from the application list"
+  (cdr (cdr (assoc application-name application-list))))
+
+
+(defun ncla--get-application-exec-command-from-application-list
+    (application-name applicatoin-list)
+  "Returns the exec command of an application from the application list"
+  (cdr (cdr (assoc application-name application-list))))
+
+
+(defun ncla--process-exec-cmd (preprocessed-cmd)
+  "Processes cmd and returns it"
+
+  ;; split string by white space
+  (setq preprocessed-cmd
+	(split-string preprocessed-cmd " " t))
+  
+  (let (cmd temp-cmd)
+    (dolist (element preprocessed-cmd)
+
+      ;; remove elements that start with the % symbol
+      (if (not (string-match-p "%" (substring element 0 1)))
+	  (if temp-cmd
+	      (setq temp-cmd (cons temp-cmd element))
+	    (setq temp-cmd element))))
+
+    ;; Back at it again with some black magic
+    (setq cmd temp-cmd)))
 
 (defun ncla--get-applications (desktop-file-paths)
   "Returns list with a list of application name and command"
