@@ -22,24 +22,19 @@
 (defun ncla ()
   "Open NCLA in an interactive minibuffer"
   (interactive)
-  (let (preprocessed-cmd cmd name desktop-files comment)
-    (setq desktop-files (ncla--get-applications ncla-desktop-file-paths))
 
-    (setq preprocessed-cmd
+  (let (application applications cmd comment name)
+    (setq applications (ncla--get-applications ncla-desktop-file-paths))
+
+    (setq application
 	  ;; Associate selected element in completion list with 
 	  (assoc (completing-read "Start application: "
-				  desktop-files nil t)
-		 desktop-files))
+				  applications nil t)
+		 applications))
 
-    (setq name (car preprocessed-cmd))
-
-    ;; fully processed command, ready to be run
-    (setq cmd (ncla--process-exec-cmd (car (cdr preprocessed-cmd))))
-
-    ;; comment
-    ;; (print (cdr (cdr preprocessed-cmd)))
-
-    (setq comment (cdr (cdr preprocessed-cmd)))
+    (setq name (car application))
+    (setq cmd (ncla--process-exec-cmd (car (cdr application))))
+    (setq comment (cdr (cdr application)))
 
     (start-process-shell-command name nil cmd)))
 
@@ -105,15 +100,13 @@
 		
 		(when (and (string-match-p "Comment=" (substring line 0 8))
 			   (not comment))
-		  (setq comment (substring line 8 (length line)))))
-	      
-	      ;; (when comment terminal name exec
-	      ;; 	    (throw 'done t))))
-	      ))
+		  (setq comment (substring line 8 (length line))))))))
 	
 	;; Don't include applications with "Terminal=true",
 	;; except when ncla-include-terminal-applications is set to a non-nil value
-	(when (or (or (not terminal) (string-match-p terminal "false")) ncla-include-terminal-applications)
+	(when (or (or (not terminal)
+		      (string-match-p terminal "false"))
+		  ncla-include-terminal-applications)
 	  ;; has to have name and execuatble command
 	  (when (and name exec)
 	    (setq applications
