@@ -24,7 +24,7 @@
 (defvar ncla--cached-timestamp nil
   "Time at when the last cache happened. Used by ncla--get-applications")
 
-(defvar ncla-cache-timeout 1
+(defvar ncla-cache-timeout 5
   "Time in seconds for the cache timeout")
 
 
