@@ -37,7 +37,7 @@
   (let (name)
     (setq name
 	  (let ((completion-extra-properties '(:annotation-function ncla--annotation-function)))
-	    (completing-read "Prompt: " applications)))
+	    (completing-read "Start application: " applications)))
     (start-process-shell-command name nil (ncla--get-exec-by-app-name name))))
 
 
