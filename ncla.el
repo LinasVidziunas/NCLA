@@ -1,13 +1,26 @@
+;;; ncla.el --- Non Counsel Linux App (Launcher) -*- lexical-binding: t -*-
+
+;; Author: Linas Vidziunas <linasvidz@gmail.com>
+;; Maintainer: Linas Vidziunas <linasvidz@gmail.com>
+;; Created: 2021
+;; Version: 0.10
+;; Package-Requires: ((emacs "26.1"))
+;; Homepage: https://github.com/LinasVidziunas/NCLA
+
+;;; Code:
+
 ;; change the path to desktop file directory if necessary
 ;; should later consider using xdg
 (defvar ncla-desktop-file-paths
-  (directory-files "/usr/share/applications/" t (regexp-quote ".desktop")))
+  (directory-files "/usr/share/applications/" t (regexp-quote ".desktop"))
+  "Contains all *.desktop files")
 
 (defvar ncla-include-terminal-applications nil
   "If non-nil value, Terminal=true applications will be included in the list")
 
+;;;###autoload
 (defun ncla ()
-    "Open NCLA in an interactive minibuffer"
+  "Open NCLA in an interactive minibuffer"
   (interactive)
   (let (preprocessed-cmd cmd name desktop-files comment)
     (setq desktop-files (ncla--get-applications ncla-desktop-file-paths))
@@ -101,11 +114,13 @@
 	;; Don't include applications with "Terminal=true",
 	;; except when ncla-include-terminal-applications is set to a non-nil value
 	(when (or (or (not terminal) (string-match-p terminal "false")) ncla-include-terminal-applications)
+	  ;; has to have name and execuatble command
 	  (when (and name exec)
 	    (setq applications
-	     (cons (list name exec comment) applications)))))))
+		  (cons (list name exec comment) applications))))))
     
     ;; Black magic to return applications
     (push (pop applications) applications)))
 
 (provide 'ncla)
+;;; ncla.el ends here
