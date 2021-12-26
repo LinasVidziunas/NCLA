@@ -3,6 +3,9 @@
 (defvar ncla-desktop-file-paths
   (directory-files "/usr/share/applications/" t (regexp-quote ".desktop")))
 
+(defvar ncla-include-terminal-applications nil
+  "If non-nil value, Terminal=true applications will be included in the list")
+
 (defun ncla ()
     "Open NCLA in an interactive minibuffer"
   (interactive)
@@ -95,7 +98,9 @@
 	      ;; 	    (throw 'done t))))
 	      ))
 	
-	(when (or (not terminal) (string-match-p terminal "false"))
+	;; Don't include applications with "Terminal=true",
+	;; except when ncla-include-terminal-applications is set to a non-nil value
+	(when (or (or (not terminal) (string-match-p terminal "false")) ncla-include-terminal-applications)
 	  (when (and name exec)
 	    (setq applications
 	     (cons (list name exec comment) applications)))))))
