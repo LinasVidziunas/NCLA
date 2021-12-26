@@ -1,0 +1,49 @@
+#+TITLE: NCLA: Non Counsel Linux App (Launcher)
+#+AUTHOR: Linas Vidziunas
+
+** Installation
+*** ~straight.el~ with ~use-package~
+
+#+begin_src emacs-lisp
+
+  (use-package ncla
+    :straight '(NCLA :host github :repo "LinasVidziunas/NCLA"))
+
+#+end_src
+
+***  ~straight.el~ 
+
+#+begin_src emacs-lisp
+
+  (straight-use-package
+    '(NCLA :type git :host github :repo "LinasVidziunas/NCLA"))
+
+#+end_src
+
+** Variables
+**** ~ncla-desktop-file-paths~
+
+Includes a list of all ~*.desktop~ files with full paths. Will hopefully be changed out for xdg later on.
+
+*Definition*
+
+#+begin_src emacs-lisp
+
+(defvar ncla-desktop-file-paths
+  (directory-files "/usr/share/applications/" t (regexp-quote ".desktop"))
+  "Contains all *.desktop files")
+
+#+end_src
+
+**** ~ncla-include-terminal-applications~ 
+
+If set to a non-nil value, applicataions with ~Terminal=true~ in their ~.desktop~ file will be included.
+
+*Definintion*
+
+#+begin_src emacs-lisp
+
+(defvar ncla-include-terminal-applications nil
+  "If non-nil value, Terminal=true applications will be included in the list")
+
+#+end_src
