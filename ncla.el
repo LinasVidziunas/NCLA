@@ -129,10 +129,9 @@
 (defun ncla--get-applications (desktop-file-paths)
   "Returns list with a list of application name and command"
   (let (applications)
-    ;; (if (or (not ncla--cached-applications)
-    ;; 	 (and ncla--cached-timestamp
-    ;; 	      (time-less-p (time-add ncla--cached-timestamp ncla-cache-timeout) (current-time))))
-    (if t ;; while testing
+    (if (or (not ncla--cached-applications)
+	 (and ncla--cached-timestamp
+	      (time-less-p (time-add ncla--cached-timestamp ncla-cache-timeout) (current-time))))
 	(progn
 	  (dolist (file-path desktop-file-paths)
 	    (let (application)
