@@ -87,30 +87,28 @@
 			(point-min)
 			(point-max))) "\n" t))
 
-	(when (>= (length line) 5)
-	  (when (and (string-match-p "Name=" (substring line 0 5))
-		     (not name))
-	    (setq name (substring line 5 (length line))))
-	  (when (and (string-match-p "Exec=" (substring line 0 5))
-		     (not exec))
-	    (setq exec (substring line 5 (length line))))
-	  
-	  (when (>= (length line) 9)
-	    (when (and (string-match-p "Terminal=" (substring line 0 9))
-		       (not terminal))
-	      (setq terminal (substring line 9 (length line))))
-	    (when (and (string-match-p "Comment=" (substring line 0 8))
-		       (not comment))
-	      (setq comment (substring line 8 (length line)))))
+	(when (and (string-match-p "^Name=" line)
+		   (not name))
+	  (setq name (substring line 5 (length line))))
 
-	  (when (>= (length line) 12)
-	    (when (and (string-match-p "GenericName=" (substring line 0 12))
-		       (not genericname))
-	      (setq genericname (substring line 12 (length line)))))
+	(when (and (string-match-p "^Exec=" line)
+		   (not exec))
+	  (setq exec (substring line 5 (length line))))
+	
+	(when (and (string-match-p "^Terminal=" line)
+		   (not terminal))
+	  (setq terminal (substring line 9 (length line))))
 
-	  (when (and (and (and (and name exec) comment) terminal) genericname)
-	    (print "all variables gotten, throwing done")
-	    (throw 'done 'done)))))
+	(when (and (string-match-p "^Comment=" line)
+		   (not comment))
+	  (setq comment (substring line 8 (length line))))
+	
+	(when (and (string-match-p "GenericName=" line)
+		   (not genericname))
+	  (setq genericname (substring line 12 (length line))))
+
+	(when (and (and (and (and name exec) comment) terminal) genericname)
+	  (throw 'done 'done))))
 
     ;; Don't include applications with "Terminal=true",
     ;; except when ncla-include-terminal-applications is set to a non-nil value
