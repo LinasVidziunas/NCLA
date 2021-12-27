@@ -58,8 +58,7 @@
     (setq genericname (assoc "genericname" (assoc application-name ncla--cached-applications)))
     (when (cdr genericname)
       ;; convert list to string
-      (format "%s"
-	      (cdr (assoc "genericname" (assoc application-name ncla--cached-applications)))))))
+      (format "%s" (cdr (assoc "genericname" (assoc application-name ncla--cached-applications)))))))
 
 
 (defun ncla--process-exec-cmd (preprocessed-cmd)
@@ -89,11 +88,9 @@
 			(point-max))) "\n" t))
 
 	(when (>= (length line) 5)
-
 	  (when (and (string-match-p "Name=" (substring line 0 5))
 		     (not name))
 	    (setq name (substring line 5 (length line))))
-	  
 	  (when (and (string-match-p "Exec=" (substring line 0 5))
 		     (not exec))
 	    (setq exec (substring line 5 (length line))))
@@ -102,7 +99,6 @@
 	    (when (and (string-match-p "Terminal=" (substring line 0 9))
 		       (not terminal))
 	      (setq terminal (substring line 9 (length line))))
-	    
 	    (when (and (string-match-p "Comment=" (substring line 0 8))
 		       (not comment))
 	      (setq comment (substring line 8 (length line)))))
