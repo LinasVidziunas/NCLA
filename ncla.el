@@ -15,7 +15,6 @@
   (directory-files "/usr/share/applications/" t (regexp-quote ".desktop"))
   "Contains all *.desktop files")
 
-
 (defvar ncla-include-terminal-applications nil
   "If non-nil value, Terminal=true applications will be included in the list")
 
@@ -142,7 +141,7 @@
 
 (defun ncla--annotation-function (cand-name)
   "Default function to annotate the completion choices."
-  (let (comment genericname return-string aass)
+  (let (comment genericname return-string)
     (setq comment (ncla--get-comment-by-app-name cand-name))
     (setq genericname (ncla--get-genericname-by-app-name cand-name))
     (when comment
