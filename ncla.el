@@ -107,7 +107,10 @@
 	    (when (and (string-match-p "GenericName=" (substring line 0 12))
 		       (not genericname))
 	      (setq genericname (substring line 12 (length line)))))
-	  )))
+
+	  (when (and (and (and (and name exec) comment) terminal) genericname)
+	    (print "all variables gotten, throwing done")
+	    (throw 'done 'done)))))
 
     ;; Don't include applications with "Terminal=true",
     ;; except when ncla-include-terminal-applications is set to a non-nil value
