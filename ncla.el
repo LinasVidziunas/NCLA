@@ -34,11 +34,12 @@
   (interactive)
   (setq applications (ncla--get-applications ncla-desktop-file-paths))
   
-  (let (name)
+  (let (name exec)
     (setq name
 	  (let ((completion-extra-properties '(:annotation-function ncla--annotation-function)))
 	    (completing-read "Start application: " applications)))
-    (start-process-shell-command name nil (ncla--get-exec-by-app-name name))))
+    (setq exec (ncla--get-exec-by-app-name name))
+    (start-process-shell-command name nil exec)))
 
 
 (defun ncla--get-comment-by-app-name (application-name)
@@ -72,7 +73,7 @@
       ;; remove elements that start with the % symbol
       (if (not (string-match-p "%" (substring element 0 1)))
 	  (if cmd
-	      (setq cmd (cons cmd element))
+	      (setq cmd (format "%s %s" cmd element))
 	    (setq cmd element))))))
 
 
